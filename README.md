@@ -10,6 +10,9 @@
 
 部署流程：
 1. 在pytorch训练好模型后，使用pytorch自带的torch.onnx.export()函数得到onnx模型。
+
 2.使用Tensorrt onnxparser解析onnx模型并进行优化得到engine，可以设置运算精度FP32、FP16、INT8，其中GPU支持FP32、FP16、INT8，DLA仅支持FP16、INT8，DLA支持的最大batchsize是32。
+
 3. pytorch需要的图片格式为CHW/RGB，在部署到Tensorrt后仍然是此格式，cifar10提供的bin数据集刚好是CHW/RGB不需要再进行额外的转换，只需要每个通道减去均值除以方差即可。
+
 4.根据batchsize做iteration = 10000 / batchsize 次迭代得到cifar10测试集上的正确率。
